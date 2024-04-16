@@ -1,7 +1,6 @@
 package main
 
 import (
-	"book-to-mail-bot/clients/telegram"
 	"flag"
 	"log"
 )
@@ -9,7 +8,7 @@ import (
 const tgBotHost = "api.telegram.org"
 
 func main() {
-	tgClient := telegram.New(tgBotHost, mustToken())
+	// New Client tg
 
 	// NewClientMail()
 
