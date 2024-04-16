@@ -8,9 +8,11 @@ import (
 const tgBotHost = "api.telegram.org"
 
 func main() {
-	// New Client tg
+	// cfg := NewConfig
 
-	// NewClientMail()
+	// tgClient := telegram.New(cfg.BotHost, cfg.Token)
+
+	// mailClient := gmail.New(cfg.From, cfg.password, cfg.to, cfg.host, cfg.port)
 
 	// New() Fetcher - take updates from tg - send mail
 
