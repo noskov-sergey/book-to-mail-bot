@@ -14,7 +14,7 @@ func main() {
 
 	// mailClient := gmail.New(cfg.From, cfg.password, cfg.to, cfg.host, cfg.port)
 
-	// New() Fetcher - take updates from tg - send mail
+	// New() Fetcher - take updates from tg
 
 	// new() Processor - make logic with files and control commands
 

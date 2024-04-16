@@ -12,7 +12,7 @@ type Update struct {
 
 type IncomingMessage struct {
 	Text     string `json:"text"`
-	Document File   `json:"document"`
+	Document *File  `json:"document"`
 	From     From   `json:"from"`
 	Chat     Chat   `json:"chat"`
 }
