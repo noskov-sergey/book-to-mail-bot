@@ -16,7 +16,7 @@ func main() {
 
 	// New() Fetcher - take updates from tg - send mail
 
-	// new() Processor - make logic with files and control comands
+	// new() Processor - make logic with files and control commands
 
 	// Consumer - make logic (Fetcher, Processor)
 }
