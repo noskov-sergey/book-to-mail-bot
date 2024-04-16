@@ -26,11 +26,13 @@ func New(from string, password string, to string, host string, port string) *Cli
 func (c *Client) SendEmail() error {
 	auth := smtp.PlainAuth("", c.from, c.password, c.host)
 
-	address := makeAddress(c.host, c.port)
-
-	toEmail := makeToEmail(c.to)
-
-	err := smtp.SendMail(address, auth, c.from, toEmail, []byte{})
+	err := smtp.SendMail(
+		makeAddress(c.host, c.port),
+		auth,
+		c.from,
+		makeToEmail(c.to),
+		[]byte{},
+	)
 	if err != nil {
 		return e.WrapErr("can't send Email: %w", err)
 	}
