@@ -29,3 +29,12 @@ type From struct {
 type Chat struct {
 	ID int `json:"id"`
 }
+
+type FileResponse struct {
+	Ok     string   `json:"ok"`
+	Result FilePath `json:"result"`
+}
+
+type FilePath struct {
+	Path string `json:"file_path"`
+}
