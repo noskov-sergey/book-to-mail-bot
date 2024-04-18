@@ -1,33 +1,27 @@
 package main
 
 import (
-	"flag"
+	event_consumer "book-to-mail-bot/Consumer/event-consumer"
+	"book-to-mail-bot/clients/gmail"
+	tgClient "book-to-mail-bot/clients/telegram"
+	"book-to-mail-bot/config"
+	"book-to-mail-bot/events/telegram"
+	"book-to-mail-bot/storage/files"
 	"log"
 )
 
-const tgBotHost = "api.telegram.org"
-
 func main() {
-	// cfg := NewConfig
+	cfg := config.MustLoad()
 
-	// tgClient := telegram.New(cfg.BotHost, cfg.Token)
+	var eventsProcessor = telegram.New(
+		tgClient.New(cfg.Telegram.Host, cfg.Telegram.Token),
+		gmail.New(cfg.Mail.From, cfg.Mail.Password, cfg.Mail.To, cfg.Mail.Host, cfg.Mail.Port),
+		files.New(cfg.Path),
+	)
 
-	// mailClient := gmail.New(cfg.From, cfg.password, cfg.to, cfg.host, cfg.port)
+	consumer := event_consumer.New(eventsProcessor, eventsProcessor, cfg.Size)
 
-	// New() Fetcher - take updates from tg
-
-	// new() Processor - make logic with files and control commands
-
-	// Consumer - make logic (Fetcher, Processor)
-}
-
-func mustToken() string {
-	t := flag.String("tg-host", "", "should be tg token for access bot")
-	flag.Parse()
-
-	if *t == "" {
-		log.Fatal("can't find access token, shutdown")
+	if err := consumer.Start(); err != nil {
+		log.Fatal("service is stopped", err)
 	}
-
-	return *t
 }

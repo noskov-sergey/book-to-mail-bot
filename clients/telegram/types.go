@@ -1,7 +1,7 @@
 package telegram
 
 type UpdateResponse struct {
-	Ok     string   `json:"ok"`
+	Ok     bool     `json:"ok"`
 	Result []Update `json:"result"`
 }
 
@@ -28,4 +28,13 @@ type From struct {
 
 type Chat struct {
 	ID int `json:"id"`
+}
+
+type FileResponse struct {
+	Ok     bool     `json:"ok"`
+	Result FilePath `json:"result"`
+}
+
+type FilePath struct {
+	Path string `json:"file_path"`
 }

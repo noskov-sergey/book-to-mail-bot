@@ -2,6 +2,9 @@ package gmail
 
 import (
 	"book-to-mail-bot/lib/e"
+	"fmt"
+	"github.com/scorredoira/email"
+	"net/mail"
 	"net/smtp"
 )
 
@@ -23,27 +26,31 @@ func New(from string, password string, to string, host string, port string) *Cli
 	}
 }
 
-func (c *Client) SendEmail() error {
-	auth := smtp.PlainAuth("", c.from, c.password, c.host)
+func (c *Client) SendEmail(file string) error {
+	m := email.NewMessage("", "")
+	m.From = mail.Address{Name: "From", Address: c.from}
+	m.To = c.makeToEmail()
 
-	err := smtp.SendMail(
-		makeAddress(c.host, c.port),
-		auth,
-		c.from,
-		makeToEmail(c.to),
-		[]byte{},
-	)
-	if err != nil {
+	if err := m.Attach(file); err != nil {
 		return e.WrapErr("can't send Email: %w", err)
 	}
 
+	// TODO LOGS
+
+	m.AddHeader("X-CUSTOMER-id", "xxxxx")
+
+	auth := smtp.PlainAuth("", c.from, c.password, c.host)
+
+	if err := email.Send(c.makeAddress(), auth, m); err != nil {
+		return e.WrapErr("can't send Email: %w", err)
+	}
 	return nil
 }
 
-func makeAddress(host string, port string) string {
-	return host + ":" + port
+func (c *Client) makeAddress() string {
+	return fmt.Sprintf("%s:%s", c.host, c.port)
 }
 
-func makeToEmail(to string) []string {
-	return []string{to}
+func (c *Client) makeToEmail() []string {
+	return []string{c.to}
 }
