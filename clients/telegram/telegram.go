@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"path"
-	"path/filepath"
 	"strconv"
 )
 
@@ -39,7 +38,14 @@ func (c *Client) Updates(offset int, limit int) (updates []Update, err error) {
 	q.Add("offset", strconv.Itoa(offset))
 	q.Add("limit", strconv.Itoa(limit))
 
-	data, err := c.doRequest(c.makePath(getUpdateMessage), q)
+	body, err := c.doRequest(c.makePath(getUpdateMessage), q)
+	if err != nil {
+		return nil, err
+	}
+
+	defer func() { _ = body.Close() }()
+
+	data, err := io.ReadAll(body)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +77,12 @@ func (c *Client) GetFileLink(fileID string) (file *FilePath, err error) {
 	q := url.Values{}
 	q.Add("file_id", fileID)
 
-	data, err := c.doRequest(c.makePath(getFile), q)
+	body, err := c.doRequest(c.makePath(getFile), q)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := io.ReadAll(body)
 	if err != nil {
 		return nil, err
 	}
@@ -85,22 +96,24 @@ func (c *Client) GetFileLink(fileID string) (file *FilePath, err error) {
 	return &res.Result, nil
 }
 
-func (c *Client) DownloadFile(path string) (data []byte, err error) {
+func (c *Client) DownloadFile(p string) (data io.ReadCloser, err error) {
 	defer func() { err = e.WrapIfErr("can't download file: %w", err) }()
 
 	q := url.Values{}
 
-	filePath := filepath.Join(getFileMethod, c.basePath, path)
+	filePath := path.Join(getFileMethod, c.basePath, p)
 
-	res, err := c.doRequest(filePath, q)
+	body, err := c.doRequest(filePath, q)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	// TODO: check for request
+
+	return body, nil
 }
 
-func (c *Client) doRequest(path string, query url.Values) (data []byte, err error) {
+func (c *Client) doRequest(path string, query url.Values) (data io.ReadCloser, err error) {
 	defer func() { err = e.WrapIfErr("can't do request: %w", err) }()
 
 	u := url.URL{
@@ -121,14 +134,7 @@ func (c *Client) doRequest(path string, query url.Values) (data []byte, err erro
 		return nil, err
 	}
 
-	defer func() { _ = resp.Body.Close() }()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return body, err
+	return resp.Body, err
 }
 
 func NewBasePath(token string) string {

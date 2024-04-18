@@ -5,29 +5,32 @@ import (
 	"book-to-mail-bot/clients/telegram"
 	"book-to-mail-bot/events"
 	"book-to-mail-bot/lib/e"
+	"book-to-mail-bot/storage"
 	"errors"
 )
 
 type Processor struct {
-	tg     telegram.Client
-	mail   clients.MailClient
-	offset int
+	tg      *telegram.Client
+	mail    clients.MailClient
+	storage storage.Storage
+	offset  int
 }
 
 type Meta struct {
 	ChatID   int
 	Username string
 	FileID   string
-	FilName  string
+	FileName string
 }
 
 var ErrUnknownEventType = errors.New("unknown event type")
 var ErrUnknownMetaType = errors.New("unknown meta type")
 
-func New(tg telegram.Client, mail clients.MailClient) Processor {
-	return Processor{
-		tg:   tg,
-		mail: mail,
+func New(tg *telegram.Client, mail clients.MailClient, storage storage.Storage) *Processor {
+	return &Processor{
+		tg:      tg,
+		mail:    mail,
+		storage: storage,
 	}
 }
 
@@ -47,6 +50,8 @@ func (p *Processor) Fetch(limit int) ([]events.Event, error) {
 		res = append(res, event(u))
 	}
 
+	p.offset = updates[len(updates)-1].ID + 1
+
 	return res, nil
 }
 
@@ -64,7 +69,7 @@ func (p *Processor) processMessage(event events.Event) (err error) {
 
 	meta, err := meta(event)
 
-	if err := p.doCmd(event.Text, meta.ChatID, meta.Username, meta.FileID, meta.FilName); err != nil {
+	if err := p.doCmd(event.Text, meta.ChatID, meta.Username, meta.FileID, meta.FileName); err != nil {
 		return err
 	}
 
@@ -92,7 +97,7 @@ func event(upd telegram.Update) events.Event {
 			ChatID:   upd.Message.Chat.ID,
 			Username: upd.Message.From.Username,
 			FileID:   upd.Message.Document.ID,
-			FilName:  upd.Message.Document.Name,
+			FileName: upd.Message.Document.Name,
 		}
 	}
 

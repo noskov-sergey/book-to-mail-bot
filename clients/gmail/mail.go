@@ -35,6 +35,8 @@ func (c *Client) SendEmail(file string) error {
 		return e.WrapErr("can't send Email: %w", err)
 	}
 
+	// TODO LOGS
+
 	m.AddHeader("X-CUSTOMER-id", "xxxxx")
 
 	auth := smtp.PlainAuth("", c.from, c.password, c.host)
