@@ -4,6 +4,7 @@ import (
 	"book-to-mail-bot/lib/e"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -97,18 +98,14 @@ func (c *Client) GetFileLink(fileID string) (file *FilePath, err error) {
 }
 
 func (c *Client) DownloadFile(p string) (data io.ReadCloser, err error) {
-	defer func() { err = e.WrapIfErr("can't download file: %w", err) }()
-
-	q := url.Values{}
-
 	filePath := path.Join(getFileMethod, c.basePath, p)
 
-	body, err := c.doRequest(filePath, q)
+	body, err := c.doRequest(filePath, url.Values{})
 	if err != nil {
-		return nil, err
+		return nil, e.WrapErr("can't download file: %w", err)
 	}
 
-	// TODO: check for request
+	log.Printf("book has been downloaded '%s'", p)
 
 	return body, nil
 }

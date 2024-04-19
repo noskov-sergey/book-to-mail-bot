@@ -1,7 +1,7 @@
 package events
 
 type Fetcher interface {
-	Fetch(limit int) ([]Event, error)
+	Fetch(l int) ([]Event, error)
 }
 
 type Processor interface {

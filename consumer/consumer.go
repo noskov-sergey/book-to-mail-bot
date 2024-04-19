@@ -1,4 +1,4 @@
-package Consumer
+package consumer
 
 type Consumer interface {
 	Start()

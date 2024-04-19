@@ -1,15 +1,12 @@
 package telegram
 
-const msgHelp = `I can save and keep your pages. Also i can offer them you to read.
+const msgHelp = `I can save and send your book to Kindle.
 
-In order to save the page, just send me al link to it.
-
-In order to get a random page from your list, send me command /rnd.
-Caution! After that this page will be removed from your list!`
+In order to send book to Kindle, just give me a file.`
 
 const msgHello = "Hi there! \n\n" + msgHelp
 
 const (
 	msgUnknownCommand = "Unknown command"
-	msgSaved          = "Book sent to your Kindle!"
+	msgSaved          = "The book has been sent to your Kindle!"
 )

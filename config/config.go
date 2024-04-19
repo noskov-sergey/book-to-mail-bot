@@ -19,11 +19,11 @@ type Telegram struct {
 }
 
 type Mail struct {
-	Host     string `yaml:"host"`
-	Port     string `yaml:"port"`
-	From     string `yaml:"from"`
-	To       string `yaml:"to"`
-	Password string `yaml:"password"`
+	Host     string   `yaml:"host"`
+	Port     string   `yaml:"port"`
+	From     string   `yaml:"from"`
+	To       []string `yaml:"to"`
+	Password string   `yaml:"password"`
 }
 
 func MustLoad() *Config {
@@ -33,13 +33,13 @@ func MustLoad() *Config {
 	}
 
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		log.Fatalf("config file does not exist: %s", configPath)
+		log.Fatalf("config file does not exist: %s, [ERR] %s", configPath, err)
 	}
 
 	var cfg Config
 
 	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
-		log.Fatalf("can't read config: %s", configPath)
+		log.Fatalf("can't read config: %s, [ERR] %s", configPath, err)
 	}
 
 	return &cfg

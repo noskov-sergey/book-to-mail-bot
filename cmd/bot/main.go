@@ -1,10 +1,10 @@
 package main
 
 import (
-	event_consumer "book-to-mail-bot/Consumer/event-consumer"
 	"book-to-mail-bot/clients/gmail"
 	tgClient "book-to-mail-bot/clients/telegram"
 	"book-to-mail-bot/config"
+	event_consumer "book-to-mail-bot/consumer/event-consumer"
 	"book-to-mail-bot/events/telegram"
 	"book-to-mail-bot/storage/files"
 	"log"
