@@ -14,6 +14,8 @@ const (
 
 func (p *Processor) doCmd(text string, chatID int, username string, fileID string, fileName string) error {
 	if fileID != "" {
+		log.Printf("got new book '%s' from '%s'", fileName, username)
+
 		return p.sendBook(chatID, fileID, fileName)
 	}
 
@@ -64,10 +66,10 @@ func (p *Processor) sendBook(chatID int, id string, name string) (err error) {
 	return nil
 }
 
-func (p *Processor) sendHelp(id int) error {
-	return nil
+func (p *Processor) sendHelp(chatID int) error {
+	return p.tg.SendMessage(chatID, msgHelp)
 }
 
-func (p *Processor) sendHello(id int) error {
-	return nil
+func (p *Processor) sendHello(chatID int) error {
+	return p.tg.SendMessage(chatID, msgHello)
 }

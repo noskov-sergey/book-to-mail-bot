@@ -1,5 +1,5 @@
 package clients
 
 type MailClient interface {
-	SendEmail(string) error
+	SendEmail(f string) error
 }

@@ -4,6 +4,7 @@ import (
 	"book-to-mail-bot/lib/e"
 	"book-to-mail-bot/storage"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -22,14 +23,14 @@ func New(basePath string) *Storage {
 	}
 }
 
-func (s *Storage) Save(page *storage.Book, data io.ReadCloser) (path string, err error) {
+func (s *Storage) Save(book *storage.Book, data io.ReadCloser) (path string, err error) {
 	defer func() { err = e.WrapIfErr("can't save book", err) }()
 
 	if err := os.MkdirAll(s.basePath, defaultPerm); err != nil {
 		return "", err
 	}
 
-	fPath := filepath.Join(s.basePath, page.Name)
+	fPath := filepath.Join(s.basePath, book.Name)
 
 	file, err := os.Create(fPath)
 	if err != nil {
@@ -42,6 +43,8 @@ func (s *Storage) Save(page *storage.Book, data io.ReadCloser) (path string, err
 	if err != nil {
 		return "", err
 	}
+
+	log.Printf("book - '%s' has been saved to local bin", book.Name)
 
 	return fPath, nil
 }
