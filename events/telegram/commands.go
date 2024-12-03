@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"book-to-mail-bot/lib/e"
-	"book-to-mail-bot/storage"
+	"github.com/noskov-sergey/book-to-mail-bot/lib/e"
+	"github.com/noskov-sergey/book-to-mail-bot/storage"
 )
 
 const (

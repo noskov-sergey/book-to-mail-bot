@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"book-to-mail-bot/events"
+	"github.com/noskov-sergey/book-to-mail-bot/events"
 )
 
 type Consumer struct {
