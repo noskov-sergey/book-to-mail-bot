@@ -80,7 +80,10 @@ jobs:
           envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
           script: |
             #Stop running container
-            sudo docker stop synoskov/book-to-mail-bot
+            sudo docker stop book-to-mail-bot
+            
+            #Remove container
+            sudo docker rm book-to-mail-bot
             
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
@@ -99,4 +102,4 @@ jobs:
             echo CONFIG_PATH=${{ secrets.MAIL_TO }} >> .env
             
             # Run a new container from a new image
-            sudo docker run --rm -d -p 5000:5000 synoskov/book-to-mail-bot
+            sudo docker run --rm -d -p 5000:5000 --name book-to-mail-bot -t synoskov/book-to-mail-bot
