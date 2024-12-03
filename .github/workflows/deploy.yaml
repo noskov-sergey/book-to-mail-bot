@@ -80,13 +80,13 @@ jobs:
           envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
           script: |
             #Change working derictory
-            cd app_bot
+            cd app_bot/
             
             #Stop running container
-            sudo docker-compose stop app
+            sudo docker compose stop app
             
             #Remove container
-            sudo docker-compose rm app
+            sudo docker compose rm app
             
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
@@ -101,9 +101,9 @@ jobs:
             echo TELEGRAM_HOST=${{ secrets.TELEGRAM_HOST }} >> .env
             echo MAIL_PORT=${{ secrets.MAIL_PORT }} >> .env
             echo MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} >> .env
-            echo secrets.MAIL_HOST=${{ secrets.MAIL_HOST }} >> .env
-            echo secrets.MAIL_FROM=${{ secrets.MAIL_FROM }} >> .env
-            echo secrets.MAIL_TO=${{ secrets.MAIL_TO }} >> .env
+            echo MAIL_HOST=${{ secrets.MAIL_HOST }} >> .env
+            echo MAIL_FROM=${{ secrets.MAIL_FROM }} >> .env
+            echo MAIL_TO=${{ secrets.MAIL_TO }} >> .env
             
             # Run a new container from a new image
-            sudo docker-compose up -d --build app
+            sudo docker compose up -d --build app
