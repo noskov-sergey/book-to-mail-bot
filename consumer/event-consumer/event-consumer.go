@@ -35,7 +35,7 @@ func (c *Consumer) Start() error {
 			continue
 		}
 
-		if err := c.handleEvents(gotEvents); err != nil {
+		if err = c.handleEvents(gotEvents); err != nil {
 			log.Print(err)
 
 			continue
