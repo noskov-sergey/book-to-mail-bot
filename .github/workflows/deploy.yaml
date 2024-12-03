@@ -1,8 +1,8 @@
 name: Deploy
 
-on: [push, pull_request]
-branches: [ main, master ]
-
+on:
+  pull_request:
+    branches: [ main, master ]
 env:
   REGISTRY: "synoskov"
   IMAGE_NAME: "book-to-mail-bot"
