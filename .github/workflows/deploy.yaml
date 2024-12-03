@@ -44,6 +44,7 @@ jobs:
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
@@ -79,7 +80,7 @@ jobs:
           envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
           script: |
             #Stop running container
-            sudo docker stop $(sudo docker ps -a -q)
+            sudo docker stop synoskov/book-to-mail-bot
             
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
