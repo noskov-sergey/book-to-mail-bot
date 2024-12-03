@@ -1,12 +1,14 @@
 package gmail
 
 import (
-	"book-to-mail-bot/lib/e"
 	"fmt"
-	"github.com/scorredoira/email"
-	"log"
 	"net/mail"
 	"net/smtp"
+
+	"github.com/scorredoira/email"
+	"go.uber.org/zap"
+
+	"book-to-mail-bot/lib/e"
 )
 
 const (
@@ -21,15 +23,18 @@ type Client struct {
 	to       []string
 	host     string
 	port     string
+
+	log *zap.Logger
 }
 
-func New(from string, password string, to []string, host string, port string) *Client {
+func New(from string, password string, to []string, host string, port string, log *zap.Logger) *Client {
 	return &Client{
 		from:     from,
 		password: password,
 		to:       to,
 		host:     host,
 		port:     port,
+		log:      log.Named("email client"),
 	}
 }
 
@@ -50,7 +55,7 @@ func (c *Client) SendEmail(file string) (err error) {
 		return err
 	}
 
-	log.Printf("book '%s' has been sent to mail", file)
+	c.log.Info("Book has been sent to mail", zap.String("book name", file), zap.String("email address", c.to[0]))
 
 	return nil
 }

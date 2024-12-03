@@ -1,12 +1,14 @@
 package files
 
 import (
-	"book-to-mail-bot/lib/e"
-	"book-to-mail-bot/storage"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
+
+	"go.uber.org/zap"
+
+	"book-to-mail-bot/lib/e"
+	"book-to-mail-bot/storage"
 )
 
 const (
@@ -15,11 +17,14 @@ const (
 
 type Storage struct {
 	basePath string
+
+	log *zap.Logger
 }
 
-func New(basePath string) *Storage {
+func New(basePath string, log *zap.Logger) *Storage {
 	return &Storage{
 		basePath: basePath,
+		log:      log.Named("data saver"),
 	}
 }
 
@@ -44,7 +49,7 @@ func (s *Storage) Save(book *storage.Book, data io.ReadCloser) (path string, err
 		return "", err
 	}
 
-	log.Printf("book - '%s' has been saved to local bin", book.Name)
+	s.log.Info("Has been saved to local bin", zap.String("book name", book.Name))
 
 	return fPath, nil
 }

@@ -1,14 +1,16 @@
 package telegram
 
 import (
-	"book-to-mail-bot/lib/e"
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"path"
 	"strconv"
+
+	"go.uber.org/zap"
+
+	"book-to-mail-bot/lib/e"
 )
 
 const (
@@ -22,13 +24,16 @@ type Client struct {
 	host     string
 	basePath string
 	client   http.Client
+
+	log *zap.Logger
 }
 
-func New(host string, token string) *Client {
+func New(host string, token string, log *zap.Logger) *Client {
 	return &Client{
 		host:     host,
 		basePath: NewBasePath(token),
 		client:   http.Client{},
+		log:      log.Named("telegram client"),
 	}
 }
 
@@ -105,7 +110,7 @@ func (c *Client) DownloadFile(p string) (data io.ReadCloser, err error) {
 		return nil, e.WrapErr("can't download file: %w", err)
 	}
 
-	log.Printf("book has been downloaded '%s'", p)
+	c.log.Info("document has been downloaded", zap.String("document", p))
 
 	return body, nil
 }

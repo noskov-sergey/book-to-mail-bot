@@ -1,22 +1,28 @@
 package event_consumer
 
 import (
-	"book-to-mail-bot/events"
 	"log"
 	"time"
+
+	"go.uber.org/zap"
+
+	"book-to-mail-bot/events"
 )
 
 type Consumer struct {
 	fetcher   events.Fetcher
 	processor events.Processor
 	batchSize int
+
+	log *zap.Logger
 }
 
-func New(fetcher events.Fetcher, processor events.Processor, batchSize int) Consumer {
+func New(fetcher events.Fetcher, processor events.Processor, batchSize int, log *zap.Logger) Consumer {
 	return Consumer{
 		fetcher:   fetcher,
 		processor: processor,
 		batchSize: batchSize,
+		log:       log.Named("worker"),
 	}
 }
 
@@ -24,7 +30,7 @@ func (c *Consumer) Start() error {
 	for {
 		gotEvents, err := c.fetcher.Fetch(c.batchSize)
 		if err != nil {
-			log.Printf("[ERR] consumer: %s", err.Error())
+			c.log.Error("fetch:", zap.Error(err))
 
 			continue
 		}
@@ -35,8 +41,8 @@ func (c *Consumer) Start() error {
 			continue
 		}
 
-		if err := c.handleEvents(gotEvents); err != nil {
-			log.Print(err)
+		if err = c.handleEvents(gotEvents); err != nil {
+			c.log.Error("handle events:", zap.Error(err))
 
 			continue
 		}
