@@ -63,7 +63,7 @@ jobs:
         with:
           file: ./Dockerfile
           push: true
-          tags: $REGISTRY/$IMAGE_NAME:latest
+          tags: synoskov/book-to-mail-bot:latest
 
   deploy-image:
     runs-on: ubuntu-latest
