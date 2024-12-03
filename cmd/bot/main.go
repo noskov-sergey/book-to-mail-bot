@@ -1,10 +1,7 @@
 package main
 
 import (
-	"flag"
 	"log"
-
-	"github.com/joho/godotenv"
 
 	"book-to-mail-bot/clients/gmail"
 	tgClient "book-to-mail-bot/clients/telegram"
@@ -15,14 +12,6 @@ import (
 )
 
 func main() {
-	cfgPath := flag.String("c", ".env", "config file path")
-	flag.Parse()
-
-	err := godotenv.Load(*cfgPath)
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	cfg := config.MustLoad()
 
 	var eventsProcessor = telegram.New(
