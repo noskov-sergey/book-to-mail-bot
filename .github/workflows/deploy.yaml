@@ -76,12 +76,8 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
           envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
           script: |
-            # Change dir to app
-            
-            
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
             
