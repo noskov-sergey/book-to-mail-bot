@@ -61,7 +61,7 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          file: ./Dockerfile
+          file: ./prod.Dockerfile
           push: true
           tags: synoskov/book-to-mail-bot:latest
 
@@ -79,11 +79,25 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
           script: |
+            # Change dir to app
+            
+            
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
             
-            touch .env
-            echo CONFIG_PATH=${{ secrets.CONFIG_PATH }} >> .env
+            touch ./app_bot/.env
+            cd app_bot
+            
+            echo CONFIG_PATH=${{ secrets.PATH }} >> .env
+            echo CONFIG_PATH=${{ secrets.BATCH_SIZE }} >> .env
+            echo CONFIG_PATH=${{ secrets.TELEGRAM_TOKEN }} >> .env
+            echo CONFIG_PATH=${{ secrets.TELEGRAM_HOST }} >> .env
+            echo CONFIG_PATH=${{ secrets.MAIL_PORT }} >> .env
+            echo CONFIG_PATH=${{ secrets.MAIL_PASSWORD }} >> .env
+            echo CONFIG_PATH=${{ secrets.MAIL_HOST }} >> .env
+            echo CONFIG_PATH=${{ secrets.MAIL_FROM }} >> .env
+            echo CONFIG_PATH=${{ secrets.MAIL_TO }} >> .env
+            
           
             # Run a new container from a new image
             docker-compose up -d --force-recreate --build app
