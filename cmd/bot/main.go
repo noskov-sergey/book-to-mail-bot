@@ -3,16 +3,17 @@ package main
 import (
 	"go.uber.org/zap"
 
-	"book-to-mail-bot/clients/gmail"
-	tgClient "book-to-mail-bot/clients/telegram"
-	"book-to-mail-bot/config"
-	event_consumer "book-to-mail-bot/consumer/event-consumer"
-	"book-to-mail-bot/events/telegram"
-	"book-to-mail-bot/storage/files"
+	tgClient "github.com/noskov-sergey/book-to-mail-bot/clients/telegram"
+	"github.com/noskov-sergey/book-to-mail-bot/config"
+	event_consumer "github.com/noskov-sergey/book-to-mail-bot/consumer/event-consumer"
+	"github.com/noskov-sergey/book-to-mail-bot/events/telegram"
+	"github.com/noskov-sergey/book-to-mail-bot/storage/files"
+
+	"github.com/noskov-sergey/book-to-mail-bot/clients/gmail"
 )
 
 func main() {
-	log, _ := zap.NewProduction()
+	log, _ := newLogger(true)
 
 	cfg := config.MustLoad(log)
 
