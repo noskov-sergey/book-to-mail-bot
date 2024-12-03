@@ -90,19 +90,20 @@ jobs:
             
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
-          
-            cd app_bot
+            
+            #Create env
             touch .env
             
-            echo CONFIG_PATH=${{ secrets.PATH }} >> .env
-            echo CONFIG_PATH=${{ secrets.BATCH_SIZE }} >> .env
-            echo CONFIG_PATH=${{ secrets.TELEGRAM_TOKEN }} >> .env
-            echo CONFIG_PATH=${{ secrets.TELEGRAM_HOST }} >> .env
-            echo CONFIG_PATH=${{ secrets.MAIL_PORT }} >> .env
-            echo CONFIG_PATH=${{ secrets.MAIL_PASSWORD }} >> .env
-            echo CONFIG_PATH=${{ secrets.MAIL_HOST }} >> .env
-            echo CONFIG_PATH=${{ secrets.MAIL_FROM }} >> .env
-            echo CONFIG_PATH=${{ secrets.MAIL_TO }} >> .env
+            #Add value to env
+            echo PATH=${{ secrets.PATH }} >> .env
+            echo BATCH_SIZE=${{ secrets.BATCH_SIZE }} >> .env
+            echo TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} >> .env
+            echo TELEGRAM_HOST=${{ secrets.TELEGRAM_HOST }} >> .env
+            echo MAIL_PORT=${{ secrets.MAIL_PORT }} >> .env
+            echo MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} >> .env
+            echo secrets.MAIL_HOST=${{ secrets.MAIL_HOST }} >> .env
+            echo secrets.MAIL_FROM=${{ secrets.MAIL_FROM }} >> .env
+            echo secrets.MAIL_TO=${{ secrets.MAIL_TO }} >> .env
             
             # Run a new container from a new image
-            sudo docker-compose up --build app -d
+            sudo docker-compose up -d --build app
