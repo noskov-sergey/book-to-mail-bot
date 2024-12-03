@@ -1,7 +1,6 @@
 package event_consumer
 
 import (
-	"log"
 	"time"
 
 	"go.uber.org/zap"
@@ -51,10 +50,10 @@ func (c *Consumer) Start() error {
 
 func (c *Consumer) handleEvents(events []events.Event) error {
 	for _, event := range events {
-		log.Printf("got new event %s", event.Text)
+		c.log.Info("got new event", zap.String("event text", event.Text))
 
 		if err := c.processor.Process(event); err != nil {
-			log.Printf("can't handle event: %s", err.Error())
+			c.log.Error("can't handle event:", zap.Error(err))
 
 			continue
 		}

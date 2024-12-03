@@ -1,7 +1,7 @@
 package telegram
 
 import (
-	"log"
+	"fmt"
 	"strings"
 
 	"book-to-mail-bot/lib/e"
@@ -15,14 +15,14 @@ const (
 
 func (p *Processor) doCmd(text string, chatID int, username string, fileID string, fileName string) error {
 	if fileID != "" {
-		log.Printf("got new book '%s' from '%s'", fileName, username)
+		p.log.Info(fmt.Sprintf("got new book '%s' from '%s'", fileName, username))
 
 		return p.sendBook(chatID, fileID, fileName)
 	}
 
 	text = strings.TrimSpace(text)
 
-	log.Printf("got new command '%s' from '%s", text, username)
+	p.log.Info(fmt.Sprintf("got new command '%s' from '%s", text, username))
 
 	switch text {
 	case HelpCmd:

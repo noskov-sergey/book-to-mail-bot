@@ -1,12 +1,15 @@
 package telegram
 
 import (
+	"errors"
+
+	"go.uber.org/zap"
+
 	"book-to-mail-bot/clients"
 	"book-to-mail-bot/clients/telegram"
 	"book-to-mail-bot/events"
 	"book-to-mail-bot/lib/e"
 	"book-to-mail-bot/storage"
-	"errors"
 )
 
 type Processor struct {
@@ -14,6 +17,8 @@ type Processor struct {
 	mail    clients.MailClient
 	storage storage.Storage
 	offset  int
+
+	log *zap.Logger
 }
 
 type Meta struct {
@@ -26,11 +31,12 @@ type Meta struct {
 var ErrUnknownEventType = errors.New("unknown event type")
 var ErrUnknownMetaType = errors.New("unknown meta type")
 
-func New(tg *telegram.Client, mail clients.MailClient, storage storage.Storage) *Processor {
+func New(tg *telegram.Client, mail clients.MailClient, storage storage.Storage, log *zap.Logger) *Processor {
 	return &Processor{
 		tg:      tg,
 		mail:    mail,
 		storage: storage,
+		log:     log.Named("processor"),
 	}
 }
 
