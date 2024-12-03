@@ -1,7 +1,6 @@
 package main
 
 import (
-
 	"go.uber.org/zap"
 
 	"book-to-mail-bot/clients/gmail"
@@ -21,6 +20,7 @@ func main() {
 		tgClient.New(cfg.Telegram.Host, cfg.Telegram.Token, log),
 		gmail.New(cfg.Mail.From, cfg.Mail.Password, cfg.Mail.To, cfg.Mail.Host, cfg.Mail.Port, log),
 		files.New(cfg.Path, log),
+		log,
 	)
 
 	consumer := event_consumer.New(eventsProcessor, eventsProcessor, cfg.Size, log)
