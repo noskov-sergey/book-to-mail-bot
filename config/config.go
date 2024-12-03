@@ -27,6 +27,7 @@ type Mail struct {
 	Password string
 }
 
+
 func MustLoad(logger *zap.Logger) *Config {
 
 	var err error = nil

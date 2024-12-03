@@ -1,2 +1,33 @@
-# book-to-mail-bot
-Bot for sending epub files from telegram to email
+# Book-To-Mail-Bot
+Проект бота в телеграмм, который умеет пересылать файл книги формата .epub и другие форматы, на особоый почтовый ящик amazon, чтобы книга загрузилась на электронную книгу Kindle.
+
+### Комментарий
+Код написан для практики в понимании архитектуры с разбиением на клиентов и возможностью их подмены через интерфейсы.
+* использованы стандарнтые пакеты Go и готовая библиотека для пересылки писем gomail.
+____
+### Как развернуть проект
+
+Клонируйте репозиторий:
+
+```
+  git clone git@github.com:noskov-sergey/book-to-mail-bot
+```
+
+В переменную оркужения "CONFIG_PATH" укажите место расположения файла конфига .yaml, в котором прописаны настройки.
+
+Формат файла конфига:
+```
+telegram:
+  token: "key"
+  host: "api.telegram.org"
+mail:
+  host: "smtp.gmail.com"
+  port: "587"
+  from: "x@gmail.com"
+  to: ["x@kindle.com",]
+  password: "password"
+storage: "storage/memory"
+bath_siz: 10
+```
+
+Запустите проект, c переменной окружения "CONFIG_PATH"

@@ -5,6 +5,7 @@ on: push
 jobs:
   linter:
     name: linter
+    
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
