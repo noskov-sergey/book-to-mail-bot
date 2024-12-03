@@ -5,11 +5,11 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/noskov-sergey/book-to-mail-bot/clients"
-	"github.com/noskov-sergey/book-to-mail-bot/clients/telegram"
-	"github.com/noskov-sergey/book-to-mail-bot/events"
-	"github.com/noskov-sergey/book-to-mail-bot/lib/e"
-	"github.com/noskov-sergey/book-to-mail-bot/storage"
+	"book-to-mail-bot/clients"
+	"book-to-mail-bot/clients/telegram"
+	"book-to-mail-bot/events"
+	"book-to-mail-bot/lib/e"
+	"book-to-mail-bot/storage"
 )
 
 type Processor struct {
