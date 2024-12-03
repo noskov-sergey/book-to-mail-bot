@@ -79,11 +79,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
           script: |
+            #working derictory
+            cd app_bot
+
             #Stop running container
-            sudo docker stop book-to-mail-bot
+            sudo docker-compose stop app
             
             #Remove container
-            sudo docker rm book-to-mail-bot
+            sudo docker-compose rm app
             
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
@@ -102,4 +105,4 @@ jobs:
             echo CONFIG_PATH=${{ secrets.MAIL_TO }} >> .env
             
             # Run a new container from a new image
-            sudo docker run -d -p 5000:5000 --name book-to-mail-bot synoskov/book-to-mail-bot
+            sudo docker-compose up --build app -d
