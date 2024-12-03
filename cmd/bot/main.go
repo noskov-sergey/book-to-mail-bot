@@ -1,7 +1,8 @@
 package main
 
 import (
-	"log"
+
+	"go.uber.org/zap"
 
 	"book-to-mail-bot/clients/gmail"
 	tgClient "book-to-mail-bot/clients/telegram"
@@ -12,17 +13,21 @@ import (
 )
 
 func main() {
-	cfg := config.MustLoad()
+	log, _ := zap.NewProduction()
+
+	cfg := config.MustLoad(log)
 
 	var eventsProcessor = telegram.New(
-		tgClient.New(cfg.Telegram.Host, cfg.Telegram.Token),
-		gmail.New(cfg.Mail.From, cfg.Mail.Password, cfg.Mail.To, cfg.Mail.Host, cfg.Mail.Port),
-		files.New(cfg.Path),
+		tgClient.New(cfg.Telegram.Host, cfg.Telegram.Token, log),
+		gmail.New(cfg.Mail.From, cfg.Mail.Password, cfg.Mail.To, cfg.Mail.Host, cfg.Mail.Port, log),
+		files.New(cfg.Path, log),
 	)
 
-	consumer := event_consumer.New(eventsProcessor, eventsProcessor, cfg.Size)
+	consumer := event_consumer.New(eventsProcessor, eventsProcessor, cfg.Size, log)
+
+	log.Info("worker is starting")
 
 	if err := consumer.Start(); err != nil {
-		log.Fatal("service is stopped", err)
+		log.Fatal("service is stopped", zap.Error(err))
 	}
 }
