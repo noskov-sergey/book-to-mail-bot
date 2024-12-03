@@ -1,8 +1,7 @@
 name: Deploy
 
-on:
-  push:
-    branches: [ main, master ]
+on: [push, pull_request]
+branches: [ main, master ]
 
 env:
   REGISTRY: "synoskov"
