@@ -1,10 +1,11 @@
 package telegram
 
 import (
-	"book-to-mail-bot/lib/e"
-	"book-to-mail-bot/storage"
 	"log"
 	"strings"
+
+	"book-to-mail-bot/lib/e"
+	"book-to-mail-bot/storage"
 )
 
 const (
