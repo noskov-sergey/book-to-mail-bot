@@ -2,7 +2,9 @@ name: Deploy
 
 on:
   pull_request:
-    branches: [ main, master ]
+    branches:
+      - "main"
+
 env:
   REGISTRY: "synoskov"
   IMAGE_NAME: "book-to-mail-bot"
