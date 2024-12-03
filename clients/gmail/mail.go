@@ -8,7 +8,7 @@ import (
 	"github.com/scorredoira/email"
 	"go.uber.org/zap"
 
-	"github.com/noskov-sergey/book-to-mail-bot/lib/e"
+	"book-to-mail-bot/lib/e"
 )
 
 const (
