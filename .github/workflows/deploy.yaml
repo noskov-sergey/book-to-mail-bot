@@ -90,9 +90,9 @@ jobs:
             
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
-            
-            touch ./app_bot/.env
+          
             cd app_bot
+            touch .env
             
             echo CONFIG_PATH=${{ secrets.PATH }} >> .env
             echo CONFIG_PATH=${{ secrets.BATCH_SIZE }} >> .env
