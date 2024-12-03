@@ -79,6 +79,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: IMAGE_NAME, REGISTRY, GITHUB_SHA, CONTAINER_NAME
           script: |
+            #Change working derictory
+            cd app_bot
+            
             #Stop running container
             sudo docker-compose stop app
             
@@ -87,9 +90,6 @@ jobs:
             
             # Pull new registry container
             docker pull $REGISTRY/$IMAGE_NAME:latest
-            
-            #Change working derictory
-            cd app_bot
             
             #Create env
             touch .env
