@@ -10,7 +10,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"book-to-mail-bot/lib/e"
+	"github.com/noskov-sergey/book-to-mail-bot/lib/e"
 )
 
 const (
