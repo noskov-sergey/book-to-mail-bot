@@ -1,18 +1,24 @@
 package main
 
 import (
+	logger "log"
+
 	"go.uber.org/zap"
 
-	"book-to-mail-bot/clients/gmail"
-	tgClient "book-to-mail-bot/clients/telegram"
-	"book-to-mail-bot/config"
-	event_consumer "book-to-mail-bot/consumer/event-consumer"
-	"book-to-mail-bot/events/telegram"
-	"book-to-mail-bot/storage/files"
+	event_consumer "github.com/noskov-sergey/book-to-mail-bot/consumer/event-consumer"
+
+	"github.com/noskov-sergey/book-to-mail-bot/clients/gmail"
+	tgClient "github.com/noskov-sergey/book-to-mail-bot/clients/telegram"
+	"github.com/noskov-sergey/book-to-mail-bot/config"
+	"github.com/noskov-sergey/book-to-mail-bot/events/telegram"
+	"github.com/noskov-sergey/book-to-mail-bot/storage/files"
 )
 
 func main() {
-	log, _ := zap.NewProduction()
+	log, err := config.NewLogger(true)
+	if err != nil {
+		logger.Fatal("service is stopped", zap.Error(err))
+	}
 
 	cfg := config.MustLoad(log)
 
