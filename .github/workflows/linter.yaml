@@ -2,14 +2,14 @@ name: Linter
 
 on:
   pull_request:
-  push:
-    branches-ignore:
+    branches:
       - "main"
+  push:
 
 jobs:
   linter:
     name: linter
-    
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,3 +22,20 @@ jobs:
         with:
           version: v1.54
           args: --timeout=30m --config=./.golangci.pipeline.yaml --issues-exit-code=0
+  build-and-test:
+    runs-on: ubuntu-latest
+    needs: linter
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache-dependency-path: go.sum
+
+      - name: Build
+        run: go build -o ./bin/ -v ./...
+
+      - name: Test
+        run: go test -v ./...
